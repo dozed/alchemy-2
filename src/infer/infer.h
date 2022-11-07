@@ -1254,7 +1254,11 @@ int buildInference(Inference*& inference, Domain*& domain,
                                   &allPredGndingsAreQueries, queryFormulas);
       if (!ok) { cout<<"Failed to create query predicates."<<endl; exit(-1); }
       Array<Predicate*>* indexedGndings = new Array<Predicate*>();
-      domain->getDB()->getIndexedGndings(indexedGndings,mln->getClause(0)->getPredicate(0),true,false);
+
+      const Clause* clause = mln->getClause(0);
+      Predicate* pred = (clause == NULL) ? NULL : clause->getPredicate(0);
+      domain->getDB()->getIndexedGndings(indexedGndings,pred,true,false);
+
       for(int i=0;i<indexedGndings->size();i++)
       {
     	  (*indexedGndings)[i]->print(cout,domain);
